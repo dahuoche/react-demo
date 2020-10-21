@@ -5,10 +5,10 @@ import App from './container/App';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  // <React.StrictMode>
+    <App appTitle={'my first react App'} />
+  // </React.StrictMode>
+  ,document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change

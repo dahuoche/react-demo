@@ -1,25 +1,39 @@
-import React from "react";
-import classes from './Cockpit.css'
+import React, {useEffect, useState} from "react";
+import classes from './Cockpit.module.css'
 
 const Cockpit = (props) => {
-    let styleClasses = [];
+    const [count, setCount] = useState(0);
+
+    useEffect( () => {
+        // console.log('[Cockpit.js] useEffect!');
+        const timer = setTimeout(() => {
+            setCount(count + 1);
+        },100);
+        return () => {
+            clearTimeout(timer)
+            // console.log('[Cockpit.js] Cleanup useEffect!');
+        }
+    }, [props.length]);
+
+    let styleRed, styleBold ;
     let btnClass;
     if(props.showPerson) {
         btnClass = classes.Red;
     }
 
     if(props.length <= 2) {
-        console.log(styleClasses);
-        styleClasses.push(classes.red);
+        styleRed = classes.red;
     }
     if(props.length <= 1) {
-        styleClasses.push(classes.bold);
+        styleBold = classes.bold;
     }
     return (
         <div className={classes.Cockpit}>
-            <h1>react app</h1>
-            <p className={styleClasses.join(' ')}>working</p>
-            <button style={btnClass}
+            <h1>{props.title}</h1>
+            <p className={`${styleRed} ${styleBold}`}>working
+                {count}
+            </p>
+            <button className={btnClass}
                     onClick={() => props.toggle()}>Switch name</button>
         </div>
 

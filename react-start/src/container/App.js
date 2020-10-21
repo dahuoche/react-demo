@@ -5,6 +5,12 @@ import Persons from "../components/Persons/Persons";
 import Cockpit from "../components/Cockpit/Cockpit";
 
 class App extends Component {
+
+    constructor(props) {
+        super(props);
+        console.log('[App.js] constructor');
+    }
+
     state = {
         person: [
             {id:'001', name: 'A', age:'27'},
@@ -12,6 +18,33 @@ class App extends Component {
             {id:'003',name: 'C', age:'29'}
         ],
         showPerson: false
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        console.log('getDerivedStateFromProps', props, state)
+        return state;
+    }
+
+    componentWillUnmount() {
+        console.log('[App.js] WillUnmount!');
+    }
+
+    componentDidMount() {
+        console.log('[App.js] DidMount!');
+    }
+
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        console.log('[App.js] Update!');
+        return true;
+    }
+
+    getSnapshotBeforeUpdate(prevProps, prevState) {
+        console.log('[App.js] getSnapshotBefore!');
+        return null;
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log('[App.js] DidUpdate!');
     }
 
     switchNameHandler = (newName) => {
@@ -39,17 +72,19 @@ class App extends Component {
     }
 
     deleteNameHandler = (personIndex) => {
+        console.log(personIndex);
         const person = [...this.state.person];
         person.splice(personIndex,1);
-        this.setState({person: person})
+        // console.log("person = ",person);
+        this.setState({person: person});
     }
 
     togglePersonHandler = () => {
-        const doesShown = this.state.showPerson;
-        this.setState({showPerson: !doesShown});
+        this.setState((prevState, props) => ({showPerson: !prevState.showPerson}));
     }
 
     render() {
+        // console.log('[App.js] render');
 
         let person = [];
 
@@ -66,11 +101,14 @@ class App extends Component {
         return (
             <StyleRoot>
                 <div className="App">
-                    <Cockpit length={this.state.person.length} showPerson={this.state.showPerson} toggle={this.togglePersonHandler}/>
+                    <Cockpit
+                        title = {this.props.appTitle}
+                        length = {this.state.person.length}
+                        showPerson = {this.state.showPerson}
+                        toggle = {this.togglePersonHandler}/>
                     {person}
                 </div>
             </StyleRoot>
-
         );
     }
 
